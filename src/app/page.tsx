@@ -1,127 +1,127 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-    ArrowRight,
-    Calendar,
-    Briefcase,
-    Heart,
-    Zap,
-    Layout,
-    Layers,
-    CheckCircle2,
-    MousePointer2
+  ArrowRight,
+  Calendar,
+  Briefcase,
+  Heart,
+  Zap,
+  Layout,
+  Layers,
+  CheckCircle2,
+  MousePointer2
 } from 'lucide-react';
 
 export default function LandingPage() {
-    const [demoBlocks, setDemoBlocks] = useState([
-        { id: 1, title: '아침 요가', time: '07:30 - 08:30', type: 'life', top: '15%' },
-        { id: 2, title: '팀 브리핑', time: '10:00 - 11:30', type: 'work', top: '35%' },
-    ]);
+  const [demoBlocks, setDemoBlocks] = useState([
+    { id: 1, title: '아침 요가', time: '07:30 - 08:30', type: 'life', top: '15%' },
+    { id: 2, title: '팀 브리핑', time: '10:00 - 11:30', type: 'work', top: '35%' },
+  ]);
 
-    return (
-        <div className="landing-container">
-            {/* Navigation */}
-            <nav className="landing-nav glass-card">
-                <div className="nav-logo">LP SEASON 2</div>
-                <div className="nav-links">
-                    <Link href="/login" className="login-link">로그인</Link>
-                    <Link href="/register" className="btn-primary-small">무료로 시작하기</Link>
-                </div>
-            </nav>
+  return (
+    <div className="landing-container">
+      {/* Navigation */}
+      <nav className="landing-nav glass-card">
+        <div className="nav-logo">LP SEASON 2</div>
+        <div className="nav-links">
+          <Link href="/login" className="login-link">로그인</Link>
+          <Link href="/register" className="btn-primary-small">무료로 시작하기</Link>
+        </div>
+      </nav>
 
-            {/* Hero Section */}
-            <header className="hero-section">
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
-                    className="hero-content"
-                >
-                    <div className="badge">AI-Powered Life Controller</div>
-                    <h1 className="hero-title">
-                        업무와 일상을 하나로,<br />
-                        당신의 삶을 <span className="gradient-text">동기화</span>하세요.
-                    </h1>
-                    <p className="hero-description">
-                        15분 단위의 정밀한 타임블록 시스템과 지능형 AI 연동으로<br />
-                        복잡한 일상을 심플한 데이터로 관리하세요.
-                    </p>
-                    <div className="hero-actions">
-                        <Link href="/register" className="btn-primary-lg">지금 바로 시작하기 <ArrowRight size={20} /></Link>
-                        <button className="btn-ghost">둘러보기</button>
-                    </div>
-                </motion.div>
+      {/* Hero Section */}
+      <header className="hero-section">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="hero-content"
+        >
+          <div className="badge">AI-Powered Life Controller</div>
+          <h1 className="hero-title">
+            업무와 일상을 하나로,<br />
+            당신의 삶을 <span className="gradient-text">동기화</span>하세요.
+          </h1>
+          <p className="hero-description">
+            15분 단위의 정밀한 타임블록 시스템과 지능형 AI 연동으로<br />
+            복잡한 일상을 심플한 데이터로 관리하세요.
+          </p>
+          <div className="hero-actions">
+            <Link href="/register" className="btn-primary-lg">지금 바로 시작하기 <ArrowRight size={20} /></Link>
+            <button className="btn-ghost">둘러보기</button>
+          </div>
+        </motion.div>
 
-                {/* Interactive Demo Sandbox */}
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 1, delay: 0.2 }}
-                    className="demo-sandbox glass-card"
-                >
-                    <div className="demo-header">
-                        <div className="demo-title">
-                            <Calendar size={18} />
-                            <span>Interactive Demo (D&D 체험)</span>
-                        </div>
-                        <div className="demo-hint"><MousePointer2 size={14} /> 블록을 클릭해보세요</div>
-                    </div>
-                    <div className="demo-grid">
-                        <div className="time-col">
-                            {[8, 9, 10, 11, 12].map(h => <div key={h} className="h-label">{h}:00</div>)}
-                        </div>
-                        <div className="grid-area">
-                            {[0, 1, 2, 3, 4].map(i => <div key={i} className="grid-line" />)}
-                            <AnimatePresence>
-                                {demoBlocks.map((block) => (
-                                    <motion.div
-                                        key={block.id}
-                                        layoutId={`block-${block.id}`}
-                                        initial={{ opacity: 0, x: -20 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        className={`demo-block ${block.type}`}
-                                        style={{ top: block.top }}
-                                    >
-                                        <div className="b-title">{block.title}</div>
-                                        <div className="b-time">{block.time}</div>
-                                    </motion.div>
-                                ))}
-                            </AnimatePresence>
-                        </div>
-                    </div>
-                </motion.div>
-            </header>
+        {/* Interactive Demo Sandbox */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, delay: 0.2 }}
+          className="demo-sandbox glass-card"
+        >
+          <div className="demo-header">
+            <div className="demo-title">
+              <Calendar size={18} />
+              <span>Interactive Demo (D&D 체험)</span>
+            </div>
+            <div className="demo-hint"><MousePointer2 size={14} /> 블록을 클릭해보세요</div>
+          </div>
+          <div className="demo-grid">
+            <div className="time-col">
+              {[8, 9, 10, 11, 12].map(h => <div key={h} className="h-label">{h}:00</div>)}
+            </div>
+            <div className="grid-area">
+              {[0, 1, 2, 3, 4].map(i => <div key={i} className="grid-line" />)}
+              <AnimatePresence>
+                {demoBlocks.map((block) => (
+                  <motion.div
+                    key={block.id}
+                    layoutId={`block-${block.id}`}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className={`demo-block ${block.type}`}
+                    style={{ top: block.top }}
+                  >
+                    <div className="b-title">{block.title}</div>
+                    <div className="b-time">{block.time}</div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+          </div>
+        </motion.div>
+      </header>
 
-            {/* Feature Section */}
-            <section className="features-section">
-                <div className="section-title-group">
-                    <h2>모든 기록이 시간이 됩니다.</h2>
-                    <p>서로 연계된 3가지 핵심 모듈로 스마트하게 관리하세요.</p>
-                </div>
+      {/* Feature Section */}
+      <section className="features-section">
+        <div className="section-title-group">
+          <h2>모든 기록이 시간이 됩니다.</h2>
+          <p>서로 연계된 3가지 핵심 모듈로 스마트하게 관리하세요.</p>
+        </div>
 
-                <div className="feature-cards">
-                    <div className="f-card glass-card">
-                        <div className="f-icon purple"><Briefcase size={24} /></div>
-                        <h3>Professional Suite</h3>
-                        <p>프로젝트 관리, 하위 작업, 집중 타이머를 통해 업무 생산성을 극대화합니다.</p>
-                    </div>
-                    <div className="f-card glass-card">
-                        <div className="f-icon green"><Heart size={24} /></div>
-                        <h3>Life Care Module</h3>
-                        <p>가계부, 건강, 목표 관리가 타임블록과 실시간으로 연동되어 기록됩니다.</p>
-                    </div>
-                    <div className="f-card glass-card">
-                        <div className="f-icon orange"><Zap size={24} /></div>
-                        <h3>AI Intelligence</h3>
-                        <p>기사 요약, 감정 분석, 지능형 스케줄링이 당신의 삶을 보조합니다.</p>
-                    </div>
-                </div>
-            </section>
+        <div className="feature-cards">
+          <div className="f-card glass-card">
+            <div className="f-icon purple"><Briefcase size={24} /></div>
+            <h3>Professional Suite</h3>
+            <p>프로젝트 관리, 하위 작업, 집중 타이머를 통해 업무 생산성을 극대화합니다.</p>
+          </div>
+          <div className="f-card glass-card">
+            <div className="f-icon green"><Heart size={24} /></div>
+            <h3>Life Care Module</h3>
+            <p>가계부, 건강, 목표 관리가 타임블록과 실시간으로 연동되어 기록됩니다.</p>
+          </div>
+          <div className="f-card glass-card">
+            <div className="f-icon orange"><Zap size={24} /></div>
+            <h3>AI Intelligence</h3>
+            <p>기사 요약, 감정 분석, 지능형 스케줄링이 당신의 삶을 보조합니다.</p>
+          </div>
+        </div>
+      </section>
 
-            <style jsx>{`
+      <style jsx>{`
         .landing-container {
           background-color: var(--bg-dark);
           color: white;
@@ -371,6 +371,6 @@ export default function LandingPage() {
           .feature-cards { grid-template-columns: 1fr; }
         }
       `}</style>
-        </div>
-    );
+    </div>
+  );
 }

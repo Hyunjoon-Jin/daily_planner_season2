@@ -1,11 +1,10 @@
 'use server';
 
-import { createServerActionClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
+import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 
 export async function getTransactions() {
-    const supabase = createServerActionClient({ cookies });
+    const supabase = await createClient();
     const { data, error } = await supabase
         .from('asset_transactions')
         .select('*')
@@ -16,7 +15,7 @@ export async function getTransactions() {
 }
 
 export async function createTransaction(formData: any) {
-    const supabase = createServerActionClient({ cookies });
+    const supabase = await createClient();
     const { data: { session } } = await supabase.auth.getSession();
 
     if (!session) throw new Error('Unauthorized');
@@ -43,7 +42,7 @@ export async function createTransaction(formData: any) {
 }
 
 export async function deleteTransaction(id: string) {
-    const supabase = createServerActionClient({ cookies });
+    const supabase = await createClient();
     const { error } = await supabase
         .from('asset_transactions')
         .delete()

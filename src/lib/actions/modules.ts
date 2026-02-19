@@ -1,12 +1,11 @@
 'use server';
 
-import { createServerActionClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
+import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 
 // HEALTH ACTIONS
 export async function createHealthLog(formData: any) {
-    const supabase = createServerActionClient({ cookies });
+    const supabase = await createClient();
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) throw new Error('Unauthorized');
 
@@ -27,7 +26,7 @@ export async function createHealthLog(formData: any) {
 
 // WORK ACTIONS (Tasks)
 export async function createWorkTask(formData: any) {
-    const supabase = createServerActionClient({ cookies });
+    const supabase = await createClient();
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) throw new Error('Unauthorized');
 
@@ -51,7 +50,7 @@ export async function createWorkTask(formData: any) {
 
 // KNOWLEDGE ACTIONS
 export async function createKnowledgeEntry(formData: any) {
-    const supabase = createServerActionClient({ cookies });
+    const supabase = await createClient();
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) throw new Error('Unauthorized');
 

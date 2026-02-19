@@ -1,11 +1,10 @@
 'use server';
 
-import { createServerActionClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
+import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 
 export async function getTimeBlocks() {
-    const supabase = createServerActionClient({ cookies });
+    const supabase = await createClient();
     const { data, error } = await supabase
         .from('time_blocks')
         .select('*')
@@ -16,7 +15,7 @@ export async function getTimeBlocks() {
 }
 
 export async function createTimeBlock(formData: any) {
-    const supabase = createServerActionClient({ cookies });
+    const supabase = await createClient();
     const { data: { session } } = await supabase.auth.getSession();
 
     if (!session) throw new Error('Unauthorized');
@@ -43,7 +42,7 @@ export async function createTimeBlock(formData: any) {
 }
 
 export async function updateTimeBlock(id: string, formData: any) {
-    const supabase = createServerActionClient({ cookies });
+    const supabase = await createClient();
     const { error } = await supabase
         .from('time_blocks')
         .update({
@@ -62,7 +61,7 @@ export async function updateTimeBlock(id: string, formData: any) {
 }
 
 export async function deleteTimeBlock(id: string) {
-    const supabase = createServerActionClient({ cookies });
+    const supabase = await createClient();
     const { error } = await supabase
         .from('time_blocks')
         .delete()

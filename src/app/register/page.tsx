@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { Mail, Lock, UserPlus, ChevronLeft, User, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
+import { BgBlobs } from '@/components/ui/BgBlobs';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -22,27 +23,44 @@ export default function RegisterPage() {
     setError(null);
     setMessage(null);
 
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          full_name: name,
-        },
-      },
-    });
+    console.log('Starting registration for:', email);
 
-    if (error) {
-      setError(error.message);
+    if (!supabase) {
+      setError('Supabase 클라이언트가 초기화되지 않았습니다. 환경 변수를 확인해주세요.');
       setLoading(false);
-    } else {
-      setMessage('인증 메일이 발송되었습니다. 이메일을 확인해 주세요!');
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: name,
+          },
+        },
+      });
+
+      console.log('Registration response:', { data, error });
+
+      if (error) {
+        setError(error.message);
+      } else {
+        setMessage('인증 메일이 발송되었습니다. 이메일을 확인해 주세요!');
+      }
+    } catch (err: any) {
+      console.error('Registration error:', err);
+      setError(err.message || '회원가입 중 예상치 못한 오류가 발생했습니다.');
+    } finally {
       setLoading(false);
     }
   };
 
   return (
     <div className="auth-container">
+      <BgBlobs />
+
       <Link href="/" className="back-btn">
         <ChevronLeft size={20} />
         <span>메인으로</span>
@@ -135,8 +153,9 @@ export default function RegisterPage() {
           display: flex;
           align-items: center;
           justify-content: center;
-          background: var(--bg-dark);
+          background: #06080B;
           position: relative;
+          overflow: hidden;
         }
 
         .auth-alert {
@@ -146,6 +165,7 @@ export default function RegisterPage() {
           font-size: 0.85rem;
           text-align: center;
           border: 1px solid;
+          z-index: 10;
         }
 
         .auth-alert.error {
@@ -169,6 +189,7 @@ export default function RegisterPage() {
           gap: 8px;
           color: var(--text-muted);
           transition: color 0.2s;
+          z-index: 10;
         }
 
         .back-btn:hover { color: var(--text-main); }
@@ -177,6 +198,7 @@ export default function RegisterPage() {
           width: 100%;
           max-width: 440px;
           padding: 48px;
+          z-index: 10;
         }
 
         .auth-header {

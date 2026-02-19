@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { Mail, Lock, LogIn, ChevronLeft, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
+import { BgBlobs } from '@/components/ui/BgBlobs';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -19,21 +20,39 @@ export default function LoginPage() {
     setLoading(true);
     setError(null);
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    console.log('Starting login for:', email);
 
-    if (error) {
-      setError(error.message);
+    if (!supabase) {
+      setError('Supabase 클라이언트가 초기화되지 않았습니다. 환경 변수를 확인해주세요.');
       setLoading(false);
-    } else {
-      router.push('/dashboard');
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      console.log('Login response:', { data, error });
+
+      if (error) {
+        setError(error.message);
+      } else {
+        router.push('/dashboard');
+      }
+    } catch (err: any) {
+      console.error('Login error:', err);
+      setError(err.message || '로그인 중 예상치 못한 오류가 발생했습니다.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="auth-container">
+      <BgBlobs />
+
       <Link href="/" className="back-btn">
         <ChevronLeft size={20} />
         <span>메인으로</span>
@@ -109,8 +128,9 @@ export default function LoginPage() {
           display: flex;
           align-items: center;
           justify-content: center;
-          background: var(--bg-dark);
+          background: #06080B;
           position: relative;
+          overflow: hidden;
         }
 
         .error-message {
@@ -122,6 +142,7 @@ export default function LoginPage() {
           margin-bottom: 24px;
           font-size: 0.85rem;
           text-align: center;
+          z-index: 10;
         }
 
         .back-btn {
@@ -133,6 +154,7 @@ export default function LoginPage() {
           gap: 8px;
           color: var(--text-muted);
           transition: color 0.2s;
+          z-index: 10;
         }
 
         .back-btn:hover { color: var(--text-main); }
@@ -141,6 +163,7 @@ export default function LoginPage() {
           width: 100%;
           max-width: 440px;
           padding: 48px;
+          z-index: 10;
         }
 
         .auth-header {
